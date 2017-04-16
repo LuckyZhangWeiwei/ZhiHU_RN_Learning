@@ -1,0 +1,62 @@
+﻿import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  View,
+  Text,
+  requireNativeComponent,
+  PropTypes,
+  NativeModules
+} from 'react-native';
+//_________________________________________
+var MyTextView = require('./MyTextView2');
+
+var RTCZhihuDaily=  React.createClass({
+    getInitialState:function(){
+        return({
+            text:"init"
+        })
+    },
+    render:function(){
+        return(
+        <View style={styles.Container}>
+            <View style={styles.outView}>
+                <MyTextView
+                    style={styles.myTextView}
+                    text={this.state.text}
+                    textSize={25}
+                    onChangeMessage={()=>this._onButtonPress()}/>
+                 <Text onPress={() => this.onClick()}>
+                  调用用原生方法
+                </Text>
+
+            </View>
+        </View>
+            );
+},
+_onButtonPress:function(){
+    alert("haha,you pressed me");
+    this.setState({
+        text:"bind event successful!"
+    });
+},
+onClick:function(){
+    NativeModules.MyNativeModule.callNativeMethod('成功调用原生方法');
+}
+});
+//_________________________________________
+const styles = StyleSheet.create({
+    container: {
+        justifyContent:'center',
+        alignItems:'center',
+        flex: 1,
+    },
+    outView:{
+        borderWidth:2,
+    },
+    myTextView:{
+        width:300,
+        height:50,
+    },
+});
+AppRegistry.registerComponent('ReactNativeLearning', () => RTCZhihuDaily);

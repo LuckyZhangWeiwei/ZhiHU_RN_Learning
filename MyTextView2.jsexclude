@@ -1,0 +1,45 @@
+﻿import React, { Component } from 'react';
+import {
+    requireNativeComponent,
+    PropTypes,
+    View
+} from 'react-native';
+
+var myTextView ={
+    name:'MyTextView',
+    propTypes:{
+        text:PropTypes.string,
+        textSize:PropTypes.number,
+        textColor:PropTypes.number,
+        isAlpha:PropTypes.bool,
+        ...View.propTypes // 包含默认的View的属性
+       }
+ }
+ var RCTMyView=requireNativeComponent('MyTextView',myTextView);
+ //import React, { Component } from 'react';
+
+class MyView extends Component{
+    constructor(){
+        super();
+        this._onChange = this._onChange.bind(this);
+    }
+    _onChange(event:Event){
+        if(!this.props.onChangeMessage){
+            return;
+        }
+        if(event.nativeEvent.message === 'MyMessage'){
+            this.props.onChangeMessage();
+            return;
+        }
+    }
+
+    render(){
+        return<RCTMyView
+        {...this.props}
+        onChange = {this._onChange}/>
+      }
+ }
+MyView.propTypes = {
+    onChangeMessage:React.PropTypes.func,
+}
+module.exports = MyView;
